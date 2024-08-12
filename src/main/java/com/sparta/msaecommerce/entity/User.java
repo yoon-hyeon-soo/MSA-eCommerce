@@ -16,10 +16,10 @@ public class User extends TimestampedEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
 
     @Column(name = "name", nullable = false)
-    private String name;
+    private String username;
 
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
@@ -33,12 +33,17 @@ public class User extends TimestampedEntity {
     @Column(name = "password", nullable = false)
     private String password;
 
-//    @Column(name = "email_verified", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
-//    private Boolean emailVerified = false;
-
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private WishList wishlist;
+//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+//    private WishList wishList;
+
+    public User(String username, String phoneNumber, String address, String email, String password ){
+        this.address = address;
+        this.username = username;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.password = password;
+    }
 }

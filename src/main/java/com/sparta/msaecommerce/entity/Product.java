@@ -16,7 +16,7 @@ public class Product extends TimestampedEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -30,9 +30,9 @@ public class Product extends TimestampedEntity {
     @Column(name = "stock_quantity", nullable = false)
     private Integer stockQuantity;
 
-    @ManyToMany(mappedBy = "products")
-    private List<WishList> wishlists;
-
     @OneToMany(mappedBy = "product")
     private List<OrderItem> orderItems;
+
+//    @OneToMany(mappedBy = "product")
+//    private List<WishlistItem> wishlistItems;
 }

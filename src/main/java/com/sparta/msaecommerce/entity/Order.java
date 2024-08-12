@@ -18,7 +18,7 @@ public class Order extends TimestampedEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -30,6 +30,6 @@ public class Order extends TimestampedEntity {
     @Column(name = "status", nullable = false)
     private String status;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems;
 }
