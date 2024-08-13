@@ -33,6 +33,6 @@ public class Product extends TimestampedEntity {
     @OneToMany(mappedBy = "product")
     private List<OrderItem> orderItems;
 
-//    @OneToMany(mappedBy = "product")
-//    private List<WishlistItem> wishlistItems;
+    @OneToMany(mappedBy = "product")
+    private List<WishListItem> wishListItems;
 }
