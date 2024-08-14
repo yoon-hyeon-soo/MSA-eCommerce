@@ -9,10 +9,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class WishListItemDto {
+public class OrderItemDto {
 
-    private Long wishListId; // 위시리스트 ID
-    private Long wishListItemId; // 위시리스트 항목 ID
-    private Long productId; // 상품 ID
+    private Long id;           // 주문 항목 ID
+    private Long productId;   // 상품 ID
     private Integer quantity; // 수량
+    private String status;    // 주문 항목 상태
 }
