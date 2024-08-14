@@ -1,5 +1,6 @@
 package com.sparta.msaecommerce.controller;
 
+import com.sparta.msaecommerce.dto.OrderDto;
 import com.sparta.msaecommerce.dto.WishListItemDto;
 import com.sparta.msaecommerce.service.WishListService;
 import org.springframework.http.ResponseEntity;
@@ -55,6 +56,18 @@ public class WishListController {
             return ResponseEntity.ok("위시리스트 항목이 성공적으로 삭제되었습니다.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // 위시리스트 항목을 주문으로 이동
+    @PostMapping("/order")
+    public ResponseEntity<OrderDto> createOrderFromWishList(
+            @RequestBody List<Long> wishListItemIds) {
+        try {
+            OrderDto orderDto = wishListService.createOrderFromWishList(wishListItemIds);
+            return ResponseEntity.ok(orderDto);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null); // 에러 처리 필요
         }
     }
 }

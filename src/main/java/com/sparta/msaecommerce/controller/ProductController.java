@@ -1,6 +1,6 @@
 package com.sparta.msaecommerce.controller;
 
-import com.sparta.msaecommerce.entity.Product;
+import com.sparta.msaecommerce.dto.ProductDto;
 import com.sparta.msaecommerce.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,15 +19,15 @@ public class ProductController {
 
     // 전체 상품 리스트 조회
     @GetMapping
-    public ResponseEntity<List<Product>> getAllProducts() {
-        List<Product> products = productService.getAllProducts();
+    public ResponseEntity<List<ProductDto>> getAllProducts() {
+        List<ProductDto> products = productService.getAllProducts();
         return ResponseEntity.ok(products);
     }
 
     // 단일 상품 조회
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
-        Product product = productService.getProductById(id);
+    public ResponseEntity<ProductDto> getProductById(@PathVariable Long id) {
+        ProductDto product = productService.getProductById(id);
         if (product != null) {
             return ResponseEntity.ok(product);
         } else {

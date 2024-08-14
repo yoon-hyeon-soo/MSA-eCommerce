@@ -1,18 +1,15 @@
 package com.sparta.msaecommerce.service;
 
+import com.sparta.msaecommerce.dto.OrderDto;
+import com.sparta.msaecommerce.dto.OrderItemDto;
 import com.sparta.msaecommerce.dto.WishListItemDto;
-import com.sparta.msaecommerce.entity.Product;
-import com.sparta.msaecommerce.entity.User;
-import com.sparta.msaecommerce.entity.WishList;
-import com.sparta.msaecommerce.entity.WishListItem;
-import com.sparta.msaecommerce.repository.ProductRepository;
-import com.sparta.msaecommerce.repository.UserRepository;
-import com.sparta.msaecommerce.repository.WishListItemRepository;
-import com.sparta.msaecommerce.repository.WishListRepository;
+import com.sparta.msaecommerce.entity.*;
+import com.sparta.msaecommerce.repository.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,13 +20,17 @@ public class WishListService {
     private final ProductRepository productRepository;
     private final WishListRepository wishListRepository;
     private final WishListItemRepository wishListItemRepository;
+    private final OrderRepository orderRepository;
+    private final OrderItemRepository orderItemRepository;
 
     public WishListService(UserRepository userRepository, ProductRepository productRepository,
-                           WishListRepository wishListRepository, WishListItemRepository wishListItemRepository) {
+                           WishListRepository wishListRepository, WishListItemRepository wishListItemRepository, OrderRepository orderRepository, OrderItemRepository orderItemRepository) {
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.wishListRepository = wishListRepository;
         this.wishListItemRepository = wishListItemRepository;
+        this.orderRepository = orderRepository;
+        this.orderItemRepository = orderItemRepository;
     }
 
     private User getCurrentUser() {
@@ -80,6 +81,7 @@ public class WishListService {
         for (WishListItem item : wishListItems) {
             wishListItemDtos.add(new WishListItemDto(
                     item.getWishList().getId(),
+                    item.getId(),
                     item.getProduct().getId(),
                     item.getQuantity()
             ));
@@ -128,5 +130,58 @@ public class WishListService {
 
         // 항목 삭제
         wishListItemRepository.delete(wishListItem);
+    }
+
+    public OrderDto createOrderFromWishList(List<Long> wishListItemIds) {
+        // 현재 사용자 조회
+        User user = getCurrentUser();
+
+        // 새로운 주문 생성
+        Order order = Order.builder()
+                .user(user)
+                .orderDate(LocalDateTime.now())
+                .status("주문 완료")
+                .build();
+
+        // 주문 항목 리스트
+        List<OrderItem> orderItems = new ArrayList<>();
+
+        for (Long wishListItemId : wishListItemIds) {
+            WishListItem wishListItem = wishListItemRepository.findById(wishListItemId)
+                    .orElseThrow(() -> new IllegalArgumentException("위시리스트 항목을 찾을 수 없습니다: " + wishListItemId));
+
+            Product product = wishListItem.getProduct();
+
+            // 새로운 주문 항목 생성
+            OrderItem orderItem = OrderItem.builder()
+                    .order(order)
+                    .product(product)
+                    .quantity(wishListItem.getQuantity())
+                    .status("주문 완료")
+                    .build();
+
+            orderItems.add(orderItem);
+
+            // 위시리스트 항목 삭제
+            wishListItemRepository.delete(wishListItem);
+        }
+
+        // 주문과 주문 항목 저장
+        order.setOrderItems(orderItems);
+        orderRepository.save(order);
+        orderItemRepository.saveAll(orderItems);
+
+        // 주문 DTO 생성
+        List<OrderItemDto> orderItemDtos = new ArrayList<>();
+        for (OrderItem item : orderItems) {
+            orderItemDtos.add(new OrderItemDto(
+                    item.getId(),
+                    item.getProduct().getId(),
+                    item.getQuantity(),
+                    item.getStatus()
+            ));
+        }
+
+        return new OrderDto(order.getId(), order.getStatus(), orderItemDtos);
     }
 }
