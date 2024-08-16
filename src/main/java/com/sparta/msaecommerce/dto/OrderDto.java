@@ -16,6 +16,5 @@ public class OrderDto {
 
     private Long orderId;              // 주문 ID
     private String status;             // 주문 상태
-//    private LocalDateTime orderDate;   // 주문 날짜
     private List<OrderItemDto> orderItems; // 주문 항목 리스트
 }

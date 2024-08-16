@@ -32,4 +32,8 @@ public class Order extends TimestampedEntity {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems;
+
+    public void updateStatus(String status) {
+        this.status = status;
+    }
 }

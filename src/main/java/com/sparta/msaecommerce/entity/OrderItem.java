@@ -30,4 +30,8 @@ public class OrderItem extends TimestampedEntity {
 
     @Column(name = "status", nullable = false)
     private String status;
+
+    public void updateStatus(String status) {
+        this.status = status;
+    }
 }
