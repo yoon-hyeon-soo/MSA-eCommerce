@@ -35,4 +35,17 @@ public class Product extends TimestampedEntity {
 
     @OneToMany(mappedBy = "product")
     private List<WishListItem> wishListItems;
+
+    // 재고 증가 메서드
+    public void increaseStock(int quantity) {
+        this.stockQuantity += quantity;
+    }
+
+    // 재고 감소 메서드
+    public void decreaseStock(int quantity) {
+        if (this.stockQuantity < quantity) {
+            throw new IllegalArgumentException("재고가 부족합니다.");
+        }
+        this.stockQuantity -= quantity;
+    }
 }
