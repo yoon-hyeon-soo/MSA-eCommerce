@@ -34,4 +34,14 @@ public class ProductController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PostMapping
+    public ResponseEntity<String> addProduct(@RequestBody ProductDto productDto) {
+        try {
+            productService.addProduct(productDto);
+            return ResponseEntity.ok("Product added successfully");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(403).body(e.getMessage());
+        }
+    }
 }
