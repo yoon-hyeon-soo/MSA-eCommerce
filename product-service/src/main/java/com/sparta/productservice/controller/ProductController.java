@@ -2,8 +2,10 @@ package com.sparta.productservice.controller;
 
 import com.sparta.productservice.dto.ProductDto;
 import com.sparta.productservice.service.ProductService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ServerWebExchange;
 
 import java.util.List;
 
@@ -35,13 +37,15 @@ public class ProductController {
         }
     }
 
+    // 제품 추가
     @PostMapping
-    public ResponseEntity<String> addProduct(@RequestBody ProductDto productDto) {
+    public ResponseEntity<String> addProduct(@RequestBody ProductDto productDto, HttpServletRequest request) {
         try {
-            productService.addProduct(productDto);
+            productService.addProduct(productDto, request);
             return ResponseEntity.ok("Product added successfully");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(403).body(e.getMessage());
         }
     }
+
 }
