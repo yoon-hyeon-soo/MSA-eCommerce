@@ -7,9 +7,10 @@ import com.sparta.orderservice.repository.OrderItemRepository;
 import com.sparta.orderservice.repository.OrderRepository;
 import com.sparta.orderservice.repository.ProductRepository;
 import com.sparta.orderservice.repository.UserRepository;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -32,10 +33,23 @@ public class OrderService {
         this.orderItemRepository = orderItemRepository;
     }
 
+    private int getCurrentUserId() {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        String userIdHeader = request.getHeader("x-claim-userid");
+        if (userIdHeader == null) {
+            throw new RuntimeException("헤더에 사용자 ID가 없습니다.");
+        }
+
+        try {
+            return Integer.parseInt(userIdHeader);
+        } catch (NumberFormatException e) {
+            throw new RuntimeException("헤더에 있는 사용자 ID 형식이 잘못되었습니다.");
+        }
+    }
+
     private User getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-        return userRepository.findByEmail(username)
+        int userId = getCurrentUserId();
+        return userRepository.findById((long) userId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
     }
 
