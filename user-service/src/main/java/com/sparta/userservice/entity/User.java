@@ -34,12 +34,6 @@ public class User extends TimestampedEntity {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @OneToMany(mappedBy = "user")
-    private List<Order> orders;
-
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private WishList wishList;
-
     public User(String username, String phoneNumber, String address, String email, String password ){
         this.address = address;
         this.username = username;
