@@ -5,7 +5,6 @@ import com.sparta.productservice.service.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ServerWebExchange;
 
 import java.util.List;
 

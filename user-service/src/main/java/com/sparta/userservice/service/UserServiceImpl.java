@@ -97,4 +97,9 @@ public class UserServiceImpl implements UserService {
             throw new BizRuntimeException("회원 저장 중 예기치 않은 오류가 발생했습니다.", e);
         }
     }
+    @Override
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id); // UserRepository에서 사용자 조회
+    }
+
 }
