@@ -10,8 +10,8 @@ services:
       MYSQL_DATABASE: commerce
       MYSQL_USER: test
       MYSQL_PASSWORD: test
-#    ports:
-#      - "3306:3306"
+    ports:
+      - "3307:3306"
     volumes:
       - mysql-data:/var/lib/mysql
     networks:
@@ -45,7 +45,7 @@ services:
       - mysql
       - eureka-server
     environment:
-      SPRING_DATASOURCE_URL: dbc:mysql://localhost:3306/MSA_eCommerce
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/commerce
       SPRING_DATASOURCE_USERNAME: test
       SPRING_DATASOURCE_PASSWORD: test
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
@@ -61,7 +61,7 @@ services:
       - mysql
       - eureka-server
     environment:
-      SPRING_DATASOURCE_URL: dbc:mysql://localhost:3306/MSA_eCommerce
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/commerce
       SPRING_DATASOURCE_USERNAME: test
       SPRING_DATASOURCE_PASSWORD: test
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
@@ -77,7 +77,7 @@ services:
       - mysql
       - eureka-server
     environment:
-      SPRING_DATASOURCE_URL: dbc:mysql://localhost:3306/MSA_eCommerce
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/commerce
       SPRING_DATASOURCE_USERNAME: test
       SPRING_DATASOURCE_PASSWORD: test
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
