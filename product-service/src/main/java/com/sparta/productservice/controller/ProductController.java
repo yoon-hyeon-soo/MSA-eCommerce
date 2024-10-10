@@ -46,5 +46,14 @@ public class ProductController {
             return ResponseEntity.status(403).body(e.getMessage());
         }
     }
-
+    // 재고 감소 API
+    @PutMapping("/{id}/decrease-stock")
+    public void decreaseStock(@PathVariable Long id, @RequestParam int quantity) {
+        productService.decreaseStock(id, quantity);
+    }
+    // 재고 증가 API
+    @PutMapping("/{id}/increase-stock")
+    public void increaseStock(@PathVariable Long id, @RequestParam int quantity) {
+        productService.increaseStock(id, quantity);
+    }
 }

@@ -82,4 +82,22 @@ public class ProductService {
                 product.getStockQuantity()
         );
     }
+    // 재고 감소
+    public void decreaseStock(Long productId, int quantity) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("제품을 찾을 수 없습니다: " + productId));
+
+        product.decreaseStock(quantity);  // Product 엔티티의 메서드 호출
+        productRepository.save(product);  // DB에 반영
+    }
+
+    // 재고 증가
+    public void increaseStock(Long productId, int quantity) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("제품을 찾을 수 없습니다: " + productId));
+
+        product.increaseStock(quantity);  // Product 엔티티의 메서드 호출
+        productRepository.save(product);  // DB에 반영
+    }
+
 }
