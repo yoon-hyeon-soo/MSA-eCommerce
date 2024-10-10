@@ -31,11 +31,6 @@ public class Product extends TimestampedEntity {
     @Column(name = "stock_quantity", nullable = false)
     private Integer stockQuantity;
 
-//    @OneToMany(mappedBy = "product")
-//    private List<OrderItem> orderItems;
-//
-//    @OneToMany(mappedBy = "product")
-//    private List<WishListItem> wishListItems;
 
     // 재고 증가 메서드
     public void increaseStock(int quantity) {

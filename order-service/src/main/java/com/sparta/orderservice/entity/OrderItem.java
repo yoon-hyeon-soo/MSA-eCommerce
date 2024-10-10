@@ -1,5 +1,6 @@
 package com.sparta.orderservice.entity;
 
+import com.sparta.productservice.entity.Product;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,9 +22,8 @@ public class OrderItem extends TimestampedEntity {
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
-    @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    private Long productId;
 
     @Column(name = "quantity", nullable = false)
     private Integer quantity;

@@ -21,9 +21,8 @@ public class WishListItem extends TimestampedEntity {
     @JoinColumn(name = "wishlist_id", nullable = false)
     private WishList wishList;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    @Column(name = "product_id", nullable = false)
+    private Long productId;  // productId로 대체
 
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
